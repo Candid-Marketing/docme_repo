@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="main">
+    <h1>Admin Dashboard</h1>
     <div class="topbar">
-
         <div class="toggle">
             <ion-icon name="menu-outline"></ion-icon>
         </div>
@@ -31,7 +31,7 @@
         <div class="card">
             <div>
                 <div class="cardName">TOTAL REGISTRATION</div>
-                <div class="numbers">105</div>
+                <div class="numbers">{{ $users->count() }}</div>
             </div>
 
             <div class="iconBx">
@@ -224,4 +224,46 @@
         </div> --}}
     </div>
 </div>
+<script>
+    console.log(@json($registrations));  // Check the data structure in the console
+</script>
+<script>
+    var registrations = @json($registrations);
+    var months = registrations.map(function(item) {
+        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        return monthNames[item.month - 1]; // Convert month number to name
+    });
+
+    var counts = registrations.map(function(item) {
+        return item.count; // Get the registration count
+    });
+
+    // Ensure Chart.js is properly loaded and available
+    if (typeof Chart !== 'undefined') {
+        var ctx = document.getElementById('registrationChart').getContext('2d');
+        var registrationChart = new Chart(ctx, {
+            type: 'bar',  // Choose chart type (e.g., bar, line, etc.)
+            data: {
+                labels: months,  // X-axis labels (month names)
+                datasets: [{
+                    label: 'Total Registrations',
+                    data: counts,  // Y-axis data (registration count)
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',  // Color for bars
+                    borderColor: 'rgba(54, 162, 235, 1)',  // Border color for bars
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true  // Start Y-axis at zero
+                    }
+                }
+            }
+        });
+    } else {
+        console.error('Chart.js is not loaded properly.');
+    }
+</script>
 @endsection

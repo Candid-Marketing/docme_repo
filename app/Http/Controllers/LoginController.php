@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use App\Models\StripeConfigurations;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
+use App\Models\Homepage;
 
 
 class LoginController extends Controller
@@ -15,7 +19,6 @@ class LoginController extends Controller
     // Show the login form
     public function index()
     {
-        // If the user is already authenticated, redirect them to their dashboard
         if (Auth::check()) {
             $user = Auth::user();
             // Redirect the user to their dashboard based on their role
@@ -30,8 +33,6 @@ class LoginController extends Controller
                     return redirect()->route('home'); // Default fallback
             }
         }
-
-        // Otherwise, show the login form
         return view('authentication.login');
     }
 
@@ -55,7 +56,9 @@ class LoginController extends Controller
                 // Redirect the user if they are not verified
                 return redirect()->route('send-otp', ['email' => $request->email]);
             }
-
+            if($user->status == 0 || $user->status == null){
+              return redirect()->route('stripe.payment');
+            }
             // Log the user in
             Auth::login($user);
 
@@ -164,7 +167,7 @@ class LoginController extends Controller
 
 
         if ($storedOtp == $request->input('otp')) {
-            $user = User::where('email', 'cywellacamson@gmail.com')->first();
+            $user = User::where('email', $request->input('email'))->first();
             $user->is_verified = 1;
             $user->email_verified_at = now();
             $user->save();
@@ -175,6 +178,35 @@ class LoginController extends Controller
         }
     }
 
+    public function proceedToPayment(Request $request)
+    {
+            $stripe = StripeConfigurations::latest()->first();
 
+            try {
+                Stripe::setApiKey($stripe->stripe_secret);
 
+                $paymentIntent = PaymentIntent::create([
+                    'amount' => 5000,
+                    'currency' => 'usd',
+                    'metadata' => ['integration_check' => 'accept_a_payment'],
+                ]);
+
+                return response()->json([
+                    'clientSecret' => $paymentIntent->client_secret,
+                ]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 400);
+            }
+    }
+
+    public function showStripePaymentPage()
+    {
+        return view('superadmin.pages.stripe.stripe-payment');
+    }
+
+    public function landing()
+    {
+        $homepage = Homepage::all();
+        return view('landing', compact('homepage'));
+    }
 }

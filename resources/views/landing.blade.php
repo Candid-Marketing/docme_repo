@@ -9,7 +9,7 @@
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="{{ asset('imgs/icon.png') }}" rel="icon">
+  <link href="{{ asset($homepage->where('name', 'favicon_image')->first()->image_path ?? 'imgs/icon.png')}}" rel="icon">
   <link href="{{ asset('imgs/docme_logo.png') }}" rel="apple-touch-icon">
 
   <!-- Fonts -->
@@ -34,8 +34,8 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-       <img src="{{ asset('imgs/docme_logo.png') }}" alt="">
+      <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
+       <img src="{{ asset($homepage->where('name', 'nav_image')->first()->image_path ?? 'imgs/docme_logo.png')}}" alt="">
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -45,36 +45,17 @@
           <li><a href="#features">Features</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#pricing">Pricing</a></li>
-          {{-- <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li> --}}
           <li><a href="#contact">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="{{ route('login.show') }}">Get Started</a>
+      <a class="btn-getstarted" href="{{ route('login') }}">Get Started</a>
 
     </div>
   </header>
 
   <main class="main">
-
-    <!-- Hero Section -->
     <section id="hero" class="hero section">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -88,18 +69,18 @@
               </div>
 
               <h1 class="mb-4">
-                Maecenas Vitae <br>
-                Consectetur Led <br>
-                <span class="accent-text">Vestibulum Ante</span>
+                {!! nl2br(e($homepage->where('name', 'home_title')->first()->content ?? 'Maecenas Vitae
+                Consectetur Led
+                Vestibulum Ante')) !!}
               </h1>
 
               <p class="mb-4 mb-md-5">
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt.
-                Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
+                {!! nl2br(e($homepage->where('name', 'home_subtitle')->first()->content ?? 'Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt.
+                Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.')) !!}
               </p>
 
               <div class="hero-buttons">
-                <a href="{{ route('login.show') }}" class="btn btn-primary me-0 me-sm-2 mx-1">Get Started</a>
+                <a href="{{ route('login') }}" class="btn btn-primary me-0 me-sm-2 mx-1">Get Started</a>
                 <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="btn btn-link mt-2 mt-sm-0 glightbox">
                   <i class="bi bi-play-circle me-1"></i>
                   Play Video
@@ -110,7 +91,7 @@
 
           <div class="col-lg-6">
             <div class="hero-image" data-aos="zoom-out" data-aos-delay="300">
-              <img src="{{ asset('img/illustration-1.webp') }}" alt="Hero Image" class="img-fluid">
+              <img src="{{ asset($homepage->where('name', 'home_image')->first()->image_path ?? 'img/illustration-1.webp')}}" alt="Hero Image" class="img-fluid">
 
               <div class="customers-badge">
                 <div class="customer-avatars">
@@ -187,8 +168,8 @@
 
           <div class="col-xl-5" data-aos="fade-up" data-aos-delay="200">
             <span class="about-meta">MORE ABOUT US</span>
-            <h2 class="about-title">Voluptas enim suscipit temporibus</h2>
-            <p class="about-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            <h2 class="about-title">  {!! nl2br(e($homepage->where('name', 'about_us_title')->first()->content ?? 'Voluptas enim suscipit temporibus')) !!} </h2>
+            <p class="about-description">  {!! nl2br(e($homepage->where('name', 'about_us_description')->first()->content ?? 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.')) !!}</p>
 
             <div class="row feature-list-wrapper">
               <div class="col-md-6">
@@ -211,7 +192,7 @@
               <div class="row gy-4">
                 <div class="col-lg-5">
                   <div class="profile d-flex align-items-center gap-3">
-                    <img src="{{ asset('img/avatar-1.webp') }}" alt="CEO Profile" class="profile-image">
+                    <img src=" {{ asset($homepage->where('name', 'about_us_image2')->first()->image_path ?? 'img/avatar-1.webp')}}" alt="CEO Profile" class="profile-image">
                     <div>
                       <h4 class="profile-name">Mario Smith</h4>
                       <p class="profile-position">CEO &amp; Founder</p>
@@ -234,8 +215,8 @@
           <div class="col-xl-6" data-aos="fade-up" data-aos-delay="300">
             <div class="image-wrapper">
               <div class="images position-relative" data-aos="zoom-out" data-aos-delay="400">
-                <img src="{{ asset('img/about-5.webp') }}" alt="Business Meeting" class="img-fluid main-image rounded-4">
-                <img src="{{ asset('img/about-2.webp') }}" alt="Team Discussion" class="img-fluid small-image rounded-4">
+                <img src="{{ asset($homepage->where('name', 'about_us_image')->first()->image_path ?? 'img/about-5.webp')}}" alt="Business Meeting" class="img-fluid main-image rounded-4">
+                <img src="{{ asset($homepage->where('name', 'about_us_image1')->first()->image_path ?? 'img/about-2.webp')}}" alt="Team Discussion" class="img-fluid small-image rounded-4">
               </div>
               <div class="experience-badge floating">
                 <h3>15+ <span>Years</span></h3>
@@ -254,8 +235,8 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Features</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h2>{!! nl2br(e($homepage->where('name', 'feature_title')->first()->content ?? 'Features')) !!}</h2>
+        <p>{!! nl2br(e($homepage->where('name', 'feature_description')->first()->content ?? 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit')) !!}</p>
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -266,19 +247,19 @@
 
             <li class="nav-item">
               <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1">
-                <h4>Modisit</h4>
+                <h4>{!! nl2br(e($homepage->where('name', 'feat_nav1')->first()->content ?? 'Modisit')) !!}</h4>
               </a>
             </li><!-- End tab nav item -->
 
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2">
-                <h4>Praesenti</h4>
+                <h4>{!! nl2br(e($homepage->where('name', 'feat_nav2')->first()->content ?? 'Praesenti')) !!}</h4>
               </a><!-- End tab nav item -->
 
             </li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3">
-                <h4>Explica</h4>
+                <h4>{!! nl2br(e($homepage->where('name', 'feat_nav3')->first()->content ?? 'Explica')) !!}</h4>
               </a>
             </li><!-- End tab nav item -->
 
@@ -291,11 +272,9 @@
           <div class="tab-pane fade active show" id="features-tab-1">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
-                <h3>Voluptatem dignissimos provident</h3>
-                <p class="fst-italic">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                  magna aliqua.
-                </p>
+                <h3>{!! nl2br(e($homepage->where('name', 'nav_title1')->first()->content ?? 'Voluptatem dignissimos provident ')) !!}</h3>
+                <p class="fst-italic">{!! nl2br(e($homepage->where('name', 'nav_desc1')->first()->content ?? ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                  magna aliqua.')) !!}</p>
                 <ul>
                   <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
                   <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
@@ -303,7 +282,7 @@
                 </ul>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="{{ asset('img/features-illustration-1.webp ') }}" alt="" class="img-fluid">
+                <img src="{{ asset($homepage->where('name', 'nav_image1')->first()->image_path ?? 'img/features-illustration-1.webp')}}" alt="" class="img-fluid">
               </div>
             </div>
           </div><!-- End tab content item -->
@@ -311,11 +290,9 @@
           <div class="tab-pane fade" id="features-tab-2">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
-                <h3>Neque exercitationem debitis</h3>
-                <p class="fst-italic">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                  magna aliqua.
-                </p>
+                <h3>{!! nl2br(e($homepage->where('name', 'nav_title2')->first()->content ?? 'Neque exercitationem debitis')) !!}</h3>
+                <p class="fst-italic">{!! nl2br(e($homepage->where('name', 'nav_desc2')->first()->content ?? ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                  magna aliqua.')) !!}</p>
                 <ul>
                   <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
                   <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
@@ -324,7 +301,7 @@
                 </ul>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="{{ asset('img/features-illustration-2.webp  ') }}" alt="" class="img-fluid">
+                <img src="{{ asset($homepage->where('name', 'nav_image2')->first()->image_path ?? 'img/features-illustration-2.webp')}}" alt="" class="img-fluid">
               </div>
             </div>
           </div><!-- End tab content item -->
@@ -332,19 +309,19 @@
           <div class="tab-pane fade" id="features-tab-3">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
-                <h3>Voluptatibus commodi accusamu</h3>
+                <h3>{!! nl2br(e($homepage->where('name', 'nav_title3')->first()->content ?? 'Voluptatibus commodi accusamu')) !!}</h3>
+                <p class="fst-italic">
+                    {!! nl2br(e($homepage->where('name', 'nav_desc3')->first()->content ?? ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                  magna aliqua.')) !!}
+                </p>
                 <ul>
                   <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
                   <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
                   <li><i class="bi bi-check2-all"></i> <span>Provident mollitia neque rerum asperiores dolores quos qui a. Ipsum neque dolor voluptate nisi sed.</span></li>
                 </ul>
-                <p class="fst-italic">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                  magna aliqua.
-                </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="{{ asset('img/features-illustration-3.webp ') }}" alt="" class="img-fluid">
+                <img src="{{ asset($homepage->where('name', 'nav_image3')->first()->image_path ?? 'img/features-illustration-3.webp ')}}" alt="" class="img-fluid">
               </div>
             </div>
           </div><!-- End tab content item -->
@@ -738,8 +715,8 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Services</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h2>{!! nl2br(e($homepage->where('name', 'service_title')->first()->content ?? 'Services')) !!}</h2>
+        <p>{!! nl2br(e($homepage->where('name', 'service_description')->first()->content ?? 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit')) !!}</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -752,8 +729,8 @@
                 <i class="bi bi-activity"></i>
               </div>
               <div>
-                <h3>Nesciunt Mete</h3>
-                <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
+                <h3>{!! nl2br(e($homepage->where('name', 'services_title1')->first()->content ?? 'Nesciunt Mete')) !!}</h3>
+                <p>{!! nl2br(e($homepage->where('name', 'service_desc2')->first()->content ?? 'Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.')) !!} </p>
                 <a href="service-details.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
               </div>
             </div>
@@ -765,8 +742,8 @@
                 <i class="bi bi-diagram-3"></i>
               </div>
               <div>
-                <h3>Eosle Commodi</h3>
-                <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
+                <h3>{!! nl2br(e($homepage->where('name', 'services_title2')->first()->content ?? 'Eosle Commodi')) !!}</h3>
+                <p>{!! nl2br(e($homepage->where('name', 'service_desc2')->first()->content ?? 'Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.')) !!} </p>
                 <a href="service-details.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
               </div>
             </div>
@@ -778,8 +755,8 @@
                 <i class="bi bi-easel"></i>
               </div>
               <div>
-                <h3>Ledo Markt</h3>
-                <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
+                <h3>{!! nl2br(e($homepage->where('name', 'services_title3')->first()->content ?? 'Ledo Markt')) !!}</h3>
+                <p>{!! nl2br(e($homepage->where('name', 'services_title3')->first()->content ?? 'Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.')) !!} </p>
                 <a href="service-details.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
               </div>
             </div>
@@ -791,8 +768,8 @@
                 <i class="bi bi-clipboard-data"></i>
               </div>
               <div>
-                <h3>Asperiores Commodit</h3>
-                <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.</p>
+                <h3>{!! nl2br(e($homepage->where('name', 'services_title4')->first()->content ?? 'Asperiores Commodit')) !!}</h3>
+                <p>{!! nl2br(e($homepage->where('name', 'services_title4')->first()->content ?? 'Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.')) !!}</p>
                 <a href="service-details.html" class="read-more">Read More <i class="bi bi-arrow-right"></i></a>
               </div>
             </div>
@@ -809,8 +786,8 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Pricing</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h2>{!! nl2br(e($homepage->where('name', 'price_title')->first()->content ?? 'Pricing')) !!}</h2>
+        <p>{!! nl2br(e($homepage->where('name', 'price_description')->first()->content ?? 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit')) !!}</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -823,11 +800,10 @@
               <h3>Basic Plan</h3>
               <div class="price">
                 <span class="currency">$</span>
-                <span class="amount">9.9</span>
-                <span class="period">/ month</span>
+                <span class="amount">{!! nl2br(e($homepage->where('name', 'price_day')->first()->content ?? '1.00')) !!}</span>
+                <span class="period">/ day</span>
               </div>
-              <p class="description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam.</p>
-
+              <p class="description">{!! nl2br(e($homepage->where('name', 'price_desc1')->first()->content ?? 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam.')) !!}</p>
               <h4>Featured Included:</h4>
               <ul class="features-list">
                 <li>
@@ -858,10 +834,10 @@
               <h3>Standard Plan</h3>
               <div class="price">
                 <span class="currency">$</span>
-                <span class="amount">19.9</span>
+                <span class="amount">{!! nl2br(e($homepage->where('name', 'price_month')->first()->content ?? '4.00')) !!}</span>
                 <span class="period">/ month</span>
               </div>
-              <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+              <p class="description">{!! nl2br(e($homepage->where('name', 'price_month')->first()->content ?? 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.')) !!} </p>
 
               <h4>Featured Included:</h4>
               <ul class="features-list">
@@ -896,10 +872,10 @@
               <h3>Premium Plan</h3>
               <div class="price">
                 <span class="currency">$</span>
-                <span class="amount">39.9</span>
+                <span class="amount">{!! nl2br(e($homepage->where('name', 'price_year')->first()->content ?? '52.00')) !!}</span>
                 <span class="period">/ month</span>
               </div>
-              <p class="description">Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.</p>
+              <p class="description">{!! nl2br(e($homepage->where('name', 'price_desc3')->first()->content ?? 'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.')) !!}</p>
 
               <h4>Featured Included:</h4>
               <ul class="features-list">
@@ -1034,8 +1010,8 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Contact</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h2>{!! nl2br(e($homepage->where('name', 'contact_title')->first()->content ?? 'Contact')) !!}</h2>
+        <p>{!! nl2br(e($homepage->where('name', 'contact_description')->first()->content ?? 'Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit')) !!}</p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -1052,8 +1028,8 @@
                 </div>
                 <div class="content">
                   <h4>Our Location</h4>
-                  <p>A108 Adam Street</p>
-                  <p>New York, NY 535022</p>
+                  <p>{!! nl2br(e($homepage->where('name', 'location_ad')->first()->content ?? 'A108 Adam Street
+                 New York, NY 535022 ')) !!} </p>
                 </div>
               </div>
 
@@ -1063,8 +1039,8 @@
                 </div>
                 <div class="content">
                   <h4>Phone Number</h4>
-                  <p>+1 5589 55488 55</p>
-                  <p>+1 6678 254445 41</p>
+                  <p>{!! nl2br(e($homepage->where('name', 'phone_num1')->first()->content ?? '+1 5589 55488 55')) !!} </p>
+                  <p>{!! nl2br(e($homepage->where('name', 'phone_num2')->first()->content ?? '+1 6678 254445 41')) !!}</p>
                 </div>
               </div>
 
@@ -1074,8 +1050,9 @@
                 </div>
                 <div class="content">
                   <h4>Email Address</h4>
-                  <p>info@example.com</p>
-                  <p>contact@example.com</p>
+                  <p>{!! nl2br(e($homepage->where('name', 'contact_email')->first()->content ?? 'candidmarketing@gmail.com
+                  candid@gmail.com')) !!}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1084,7 +1061,7 @@
           <div class="col-lg-7">
             <div class="contact-form" data-aos="fade-up" data-aos-delay="300">
               <h3>Get In Touch</h3>
-              <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis.</p>
+              <p>{!! nl2br(e($homepage->where('name', 'touch_desc')->first()->content ?? 'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis.')) !!}</p>
 
               <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
                 <div class="row gy-4">
@@ -1133,13 +1110,13 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">iLanding</span>
+            <span class="sitename"><img class="sitename" src="{{ asset($homepage->where('name', 'footer_title')->first()->image_path ?? 'imgs/docme_logo.png') }}" alt="Favicon Image" /></span>
           </a>
           <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
+            <p>{!! nl2br(e($homepage->where('name', 'footer_add')->first()->content ?? 'A108 Adam Street
+            New York, NY 535022')) !!}</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>{!! nl2br(e($homepage->where('name', 'footer_phone')->first()->content ?? '+1 5589 55488 55')) !!}</span></p>
+            <p><strong>Email:</strong> <span>{!! nl2br(e($homepage->where('name', 'footer_email')->first()->content ?? 'candidmarketing@gmail.com')) !!}</span></p>
           </div>
           <div class="social-links d-flex mt-4">
             <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -1171,7 +1148,7 @@
           </ul>
         </div>
 
-        <div class="col-lg-2 col-md-3 footer-links">
+        {{-- <div class="col-lg-2 col-md-3 footer-links">
           <h4>Hic solutasetp</h4>
           <ul>
             <li><a href="#">Molestiae accusamus iure</a></li>
@@ -1180,9 +1157,9 @@
             <li><a href="#">Dilecta</a></li>
             <li><a href="#">Sit quas consectetur</a></li>
           </ul>
-        </div>
+        </div> --}}
 
-        <div class="col-lg-2 col-md-3 footer-links">
+        {{-- <div class="col-lg-2 col-md-3 footer-links">
           <h4>Nobis illum</h4>
           <ul>
             <li><a href="#">Ipsam</a></li>
@@ -1191,19 +1168,15 @@
             <li><a href="#">Trodelas</a></li>
             <li><a href="#">Flexo</a></li>
           </ul>
-        </div>
+        </div> --}}
 
       </div>
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">iLanding</strong> <span>All Rights Reserved</span></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">DOC ME</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        Designed by <a href="https://candidmarketing.com.au/">Candid Marketing</a>
       </div>
     </div>
 

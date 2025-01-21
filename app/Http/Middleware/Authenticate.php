@@ -18,7 +18,9 @@ class Authenticate extends Middleware
         // If the user is already authenticated
         if (Auth::check()) {
             $user = Auth::user();
-
+            if ($user->is_verified == 0 || $user->is_verified == null) {
+                return route('send-otp');
+            }
             // Redirect the user to their dashboard based on their role
             switch ($user->user_status) {
                 case 1: // Super Admin
@@ -31,8 +33,6 @@ class Authenticate extends Middleware
                     return route('home'); // Default fallback
             }
         }
-
-        // If the user is not authenticated, redirect to the login page
         if (! $request->expectsJson()) {
             return route('login');
         }

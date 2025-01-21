@@ -18,18 +18,20 @@ use App\Http\Controllers\FinanceController;
 |
 */
 
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', [LoginController::class, 'landing'])->name('landing.page');
 
-
-Route::get('/login', [LoginController::class, 'index'])->name('login.show');
+Route::get('/login', [LoginController::class, 'index'])->name('login');;
 Route::post('/login/submit', [LoginController::class, 'authenticate'])->name('login.authenticate');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register',[LoginController::class,'register'])->name('register');
 Route::get('send-otp',[LoginController::class,'sendotp'])->name('send-otp');
 Route::get('show-otp',[LoginController::class,'showotp'])->name('show-otp');
 Route::post('verify-otp',[LoginController::class,'verifyotp'])->name('verify-otp');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/payment', [LoginController::class, 'proceedToPayment'])->name('payment.proceed');
+    Route::get('/stripe-payment', [LoginController::class, 'showStripePaymentPage'])->name('stripe.payment');
+});
 // SuperAdmin Routes
 Route::middleware(['auth', 'role:1'])->group(function() {
     Route::get('superadmin/dashboard', [SuperAdminController::class, 'index'])->name('superadmin.dashboard');
@@ -37,6 +39,10 @@ Route::middleware(['auth', 'role:1'])->group(function() {
     Route::get('superadmin/profile', [SuperAdminController::class, 'profile'])->name('superadmin.profile');
     Route::get('superadmin/email', [SuperAdminController::class, 'email'])->name('superadmin.email');
     Route::get('superadmin/homepage', [SuperAdminController::class, 'homepage'])->name('superadmin.homepage');
+    Route::post('superadmin/homepage', [SuperAdminController::class, 'homestore'])->name('superadmin.homestore');
+    Route::get('superadmin/user', [SuperAdminController::class, 'user'])->name('superadmin.user');
+    Route::post('superadmin/add-user', [SuperAdminController::class, 'addUser'])->name('superadmin.add-user');
+    Route::post('superadmin/stripe-configuration', [SuperAdminController::class, 'stripeupdate'])->name('superadmin.stripe-update');
 });
 
 // Admin Routes
