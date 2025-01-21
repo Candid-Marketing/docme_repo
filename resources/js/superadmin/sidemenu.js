@@ -22,31 +22,46 @@ document.addEventListener("DOMContentLoaded", function () {
         navigation.classList.toggle("active");
         main.classList.toggle("active");
     };
+});
 
-    // Chart.js code
-    var ctx = document.getElementById('registrationChart').getContext('2d');
-    var registrationChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-            datasets: [{
-                label: "Registrations",
-                data: [50, 80, 120, 150, 200, 220, 300],
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+//Add user
+
+document.getElementById('addUserForm').addEventListener('submit', function (e) {
+
+    // Clear previous errors
+    document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+    const formData = new FormData(this);
+
+    $.ajax({
+        url: '/superadmin/add-user', // Correct URL for the POST request
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            if (data.success) {
+                e.preventDefault();
+                document.getElementById('addUserForm').reset();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                modal.hide();
+
+            } else if (data.errors) {
+                console.log(data);
+                // Display validation errors in the modal
+                for (const [field, messages] of Object.entries(data.errors)) {
+
+                    const errorElement = document.getElementById(`${field}_error`);
+                    if (errorElement) {
+                        errorElement.textContent = messages[0];  // Display first error message for the field
+                    }
                 }
-            },
-            responsive: true, // Make chart responsive
-            maintainAspectRatio: false // Allow manual resizing
+            }
+        },
+        error: function (xhr, status, error) {
+            // Handle any errors
+            console.error('AJAX Error:', error);
         }
     });
-
 });
+
