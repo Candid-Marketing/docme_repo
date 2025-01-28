@@ -5,73 +5,74 @@
     <script src="https://js.stripe.com/v3/"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      body {
-            background: linear-gradient(90deg, rgb(92, 0, 131), rgb(241, 106, 214));
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-                max-width: 1200px;
-                margin: 50px auto;
-                padding: 15px; /* Add padding for small devices */
+        body {
+                background: linear-gradient(90deg, rgb(92, 0, 131), rgb(241, 106, 214));
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
             }
 
-            .card {
-                    border-radius: 10px;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+            .container {
+                    max-width: 1200px;
+                    margin: 50px auto;
+                    padding: 15px; /* Add padding for small devices */
                 }
 
-                .card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-                }
+                .card {
+                        border-radius: 10px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    }
 
-                    .card-title {
-        font-size: 1.25rem; /* Smaller font for better scaling */
-    }
+                    .card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+                    }
 
-        .btn-subscribe {
-            width: 100%;
+                        .card-title {
+            font-size: 1.25rem; /* Smaller font for better scaling */
         }
+
+            .btn-subscribe {
+                width: 100%;
+            }
+            .text-whites h1 {
+                background: linear-gradient(90deg, rgb(92, 0, 131), rgb(241, 106, 214));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 2.5rem; /* Adjust font size for headers */
+                text-align: center;
+            }
+
+            @media (max-width: 768px) {
+        .card-title {
+            font-size: 1.1rem;
+        }
+
         .text-whites h1 {
-            background: linear-gradient(90deg, rgb(92, 0, 131), rgb(241, 106, 214));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 2.5rem; /* Adjust font size for headers */
-             text-align: center;
+            font-size: 2rem;
         }
 
-        @media (max-width: 768px) {
-    .card-title {
-        font-size: 1.1rem;
+        .card-text {
+            font-size: 0.9rem;
+        }
     }
 
-    .text-whites h1 {
-        font-size: 2rem;
-    }
+    @media (max-width: 576px) {
+        .container {
+            margin: 20px auto;
+        }
 
-    .card-text {
-        font-size: 0.9rem;
-    }
-}
+        .card-title {
+            font-size: 1rem;
+        }
 
-@media (max-width: 576px) {
-    .container {
-        margin: 20px auto;
+        .card-text {
+            font-size: 0.8rem;
+        }
     }
-
-    .card-title {
-        font-size: 1rem;
-    }
-
-    .card-text {
-        font-size: 0.8rem;
-    }
-}
-    </style>
+        </style>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <div class="container">
@@ -136,13 +137,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="payment-form">
-                        <!-- Plan Details -->
-                        <div class="mb-3">
+                    <form id="payment-form" method="POST">
+                        <div class ="mb-3">
                             <label for="plan-details" class="form-label">Plan Details</label>
                             <input type="text" id="plan-details" class="form-control" readonly>
                         </div>
-                        <!-- Card Element -->
                         <div class="mb-3">
                             <label for="card-element" class="form-label">Enter your card details</label>
                             <div id="card-element"></div>
@@ -157,9 +156,9 @@
 
     <!-- Bootstrap and Stripe JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Initialize Stripe
-        const stripe = Stripe('your-publishable-key-here'); // Replace with your Stripe publishable key
+        const stripe = Stripe('{{ $stripe->stripe_key }}');
         const elements = stripe.elements();
         const cardElement = elements.create('card');
         cardElement.mount('#card-element');
@@ -168,34 +167,62 @@
 
         document.querySelectorAll('.btn-subscribe').forEach(button => {
             button.addEventListener('click', function () {
-                const plan = this.getAttribute('data-plan');
                 const amount = this.getAttribute('data-amount');
-                const planDetails = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan - $${(amount / 100).toFixed(2)}`;
 
                 // Update modal with selected plan details
-                document.getElementById('plan-details').value = planDetails;
+                document.getElementById('plan-details').value = `${this.getAttribute('data-plan').charAt(0).toUpperCase() + this.getAttribute('data-plan').slice(1)} Plan - $${(amount / 100).toFixed(2)}`;
 
                 // Show the modal
                 paymentModal.show();
             });
         });
 
-        document.getElementById('payment-form').onsubmit = function (e) {
-            e.preventDefault();
+        $(document).ready(function () {
+            $('#payment-form').on('submit', function (e) {
+                e.preventDefault();
 
-            stripe.confirmCardPayment('client-secret-from-backend', {
-                payment_method: {
-                    card: cardElement,
+                // Get the selected plan and amount
+                const selectedPlan = $('#plan-details').val().split(' ')[0].toLowerCase();
+                const amount = $('.btn-subscribe[data-plan="' + selectedPlan + '"]').data('amount');
+
+                if (!amount) {
+                    $('#card-errors').text('Invalid amount or plan selected.');
+                    return;
                 }
-            }).then(function (result) {
-                if (result.error) {
-                    document.getElementById('card-errors').textContent = result.error.message;
-                } else {
-                    alert('Payment successful!');
-                    paymentModal.hide();
-                }
+
+                // Create a payment intent on the server
+                $.ajax({
+                    url: "{{ route('payment.proceed') }}", // Your route
+                    method: 'POST',
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                    },
+                    data: JSON.stringify({ amount: amount }), // Send amount to backend
+                    success: function (response) {
+                        const clientSecret = response.clientSecret;
+
+                        // Confirm the payment using Stripe.js
+                        stripe.confirmCardPayment(clientSecret, {
+                            payment_method: {
+                                card: cardElement,
+                            }
+                        }).then(function (result) {
+                            if (result.error) {
+                                $('#card-errors').text(result.error.message);
+                            } else {
+                                alert('Payment successful!');
+                                paymentModal.hide();
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        const errorMessage = xhr.responseJSON?.error || 'An error occurred while processing your payment. Please try again.';
+                        $('#card-errors').text(errorMessage);
+                    }
+                });
             });
-        };
+        });
     </script>
 </body>
 </html>

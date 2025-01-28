@@ -87,7 +87,7 @@
 
       <div class="toggle-box">
          <div class ="toggle-panel toggle-left">
-            <img src="{{ asset('imgs/docme_logo.png') }}" alt="DocME Logo" class="logo" width="150" height="50">
+            <img src="{{ asset('imgs/docme_logo.png') }}" alt="DocME Logo" class="logo img-fluid" width="300" height="100">
             <br>
             <h2> Hello, Welcome to DocME<h2>
             <p> Don't have  an account ?</p>
@@ -96,7 +96,7 @@
 
          <div class ="toggle-panel toggle-right">
 
-            <img src="{{ asset('imgs/docme_logo.png') }}" alt="DocME Logo" class="logo" width="150" height="50">
+             <img src="{{ asset('imgs/docme_logo.png') }}" alt="DocME Logo" class="logo img-fluid" width="300" height="100">
             <br>
             <h2>Welcome Back <h2>
             <p> Already have an account ?</p>

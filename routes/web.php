@@ -26,12 +26,10 @@ Route::post('/register',[LoginController::class,'register'])->name('register');
 Route::get('send-otp',[LoginController::class,'sendotp'])->name('send-otp');
 Route::get('show-otp',[LoginController::class,'showotp'])->name('show-otp');
 Route::post('verify-otp',[LoginController::class,'verifyotp'])->name('verify-otp');
+Route::post('/payment', [LoginController::class, 'proceedToPayment'])->name('payment.proceed');
+Route::get('/stripe-payment', [LoginController::class, 'showStripePaymentPage'])->name('stripe.payment');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout.show');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::post('/payment', [LoginController::class, 'proceedToPayment'])->name('payment.proceed');
-    Route::get('/stripe-payment', [LoginController::class, 'showStripePaymentPage'])->name('stripe.payment');
-});
 // SuperAdmin Routes
 Route::middleware(['auth', 'role:1'])->group(function() {
     Route::get('superadmin/dashboard', [SuperAdminController::class, 'index'])->name('superadmin.dashboard');
@@ -49,6 +47,7 @@ Route::middleware(['auth', 'role:1'])->group(function() {
 Route::middleware(['auth', 'role:2'])->group(function() {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    Route::get('admin/manage', [AdminController::class, 'manage'])->name('admin.manage');
 });
 
 // User Routes
