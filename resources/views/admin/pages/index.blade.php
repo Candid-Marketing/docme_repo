@@ -3,14 +3,9 @@
 @section('content')
 
 <div class="main">
-    <h1 class=""> User Dashboard</h1>
-    <div class="topbar">
-        <div class="toggle">
-            <ion-icon name="menu-outline"></ion-icon>
-        </div>
-    </div>
     <div class="container">
         <div class="row mt-5">
+            <h1 class=""> User Dashboard</h1>
             <div class="col-md-4 mt-5">
                 <h5 class="mt-4">WELCOME</h5>
             </div>

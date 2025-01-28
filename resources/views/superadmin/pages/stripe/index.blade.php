@@ -2,11 +2,6 @@
 
 @section('content')
 <div class="main">
-    <div class="topbar">
-        <div class="toggle">
-            <ion-icon name="menu-outline"></ion-icon>
-        </div>
-    </div>
     <div class="container">
         <h1 class="mt-4 h1-title">Admin Finance</h1>
         <h5 class="mt-4">Stripe Setting</h5>

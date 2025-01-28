@@ -32,7 +32,7 @@ body {
   position: fixed;
   width: 300px;
   height: 100%;
-  background: linear-gradient(to bottom, rgb(92, 0, 131), rgb(241, 106, 214));
+  background: linear-gradient(to bottom, rgb(104,54,149),  rgb(58,191,221));
   border-left: 10px solid var(--blue);
   transition: 0.5s;
   overflow: hidden;
@@ -41,6 +41,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 10000;
 }
 .navigation.active {
   width: 110px;
@@ -142,6 +143,7 @@ body {
   min-height: 100vh;
   background: var(--white);
   transition: 0.5s;
+  top: 60px;
 }
 .main.active {
   width: calc(100% - 80px);
@@ -415,6 +417,9 @@ body {
 
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
+    .topbar{
+        margin-top: 50px;
+    }
     .search {
         width: 300px; /* Adjust width for medium screens */
         margin: 0 auto; /* Center the search bar */
@@ -425,14 +430,17 @@ body {
 
   .navigation {
     left: -200px;
+    z-index: 1000;
   }
   .navigation.active {
     width: 300px;
     left: 0;
+    z-index: 10000;
   }
   .main {
     width: 100%;
     left: 0;
+    top: 120px;
   }
   .main.active {
     left: 300px;
@@ -445,6 +453,9 @@ body {
 
 
 @media (max-width: 768px) {
+    .topbar{
+        margin-top: 50px;
+    }
     .search {
         width: 250px; /* Reduce width for smaller screens */
         margin: 10px auto; /* Center and add spacing */
@@ -469,9 +480,19 @@ body {
   .status.inProgress {
     white-space: nowrap;
   }
+
+  .navigation {
+    z-index: 1000;
+  }
+  .navigation.activate{
+    z-index: 10000;
+  }
 }
 
 @media (max-width: 480px) {
+    .topbar{
+        margin-top: 50px;
+    }
     .search {
         width: 100%; /* Full width for very small screens */
         margin: 10px 0; /* Adjust spacing */
@@ -506,6 +527,7 @@ body {
   .navigation.active {
     width: 100%;
     left: 0;
+    z-index: 10000;
   }
   .toggle {
     z-index: 10001;

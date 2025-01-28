@@ -13,7 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(90deg, rgb(92, 0, 131), rgb(241, 106, 214));
+    background: linear-gradient(90deg, rgb(58,191,221), rgb(104,54,149));
 }
 
 .container {
@@ -107,8 +107,9 @@ form {
    border: none;
    cursor: pointer;
    font-size: 16px;
-   color : white;
+   color : rgb(17, 16, 16);
    font-weight: 600;
+   color: #fff;
 }
 
 .container p {
@@ -149,7 +150,7 @@ form {
     left: -250%;
     width: 300%;
     height: 100%;
-    background: #7494ec;
+    /* background: #7494ec; */
     border-radius: 150px;
     z-index: 2;
     transition: 1.8s ease-in-out;
@@ -168,7 +169,7 @@ form {
     justify-content: center;
     align-items: center;
     z-index: 2;
-    color: #fff;
+    color: #0e0e0e;
     transition: .6s ease-in-out;
 }
 
@@ -200,7 +201,7 @@ form {
 .toggle-panel .btn {
    width: 160px;
     height: 46px;
-    background: transparent;
+    background: #3abfdd;
     border: 2px solid #fff;
     box-shadow: none;
 }
@@ -212,6 +213,16 @@ form {
 .social-icons {
     display: flex;
     justify-content: center;
+    gap: 5px; /* Creates uniform spacing between the icons */
+}
+
+
+.logo {
+    display: inline-block;
+    max-width: 100%; /* Prevent the image from overflowing */
+    height: auto; /* Maintain aspect ratio */
+    vertical-align: middle; /* Align with surrounding text */
+    margin-bottom: 10px;
 }
 
 
@@ -252,12 +263,13 @@ form {
      }
 
     .toggle-panel.toggle-left {
+      margin-top: 37px;
       top: 0;
     }
 
     .container.active .toggle-panel.toggle-left {
         left: 0;
-        top: -30%;
+        top: -40%;
      }
 
     .toggle-panel.toggle-right {
@@ -266,7 +278,7 @@ form {
      }
 
      .container.active .toggle-panel.toggle-right {
-        bottom: 0;
+        bottom: 15px;
      }
 }
 

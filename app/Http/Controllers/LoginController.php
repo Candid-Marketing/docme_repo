@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\StripeConfigurations;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
-use App\Models\Homepage;
+use App\Models\HomePage;
 
 
 class LoginController extends Controller
@@ -56,9 +56,11 @@ class LoginController extends Controller
                 // Redirect the user if they are not verified
                 return redirect()->route('send-otp', ['email' => $request->email]);
             }
+
             if($user->status == 0 || $user->status == null){
               return redirect()->route('stripe.payment');
             }
+
             // Log the user in
             Auth::login($user);
 
@@ -87,7 +89,7 @@ class LoginController extends Controller
         $request->session()->invalidate(); // Invalidate the session
         $request->session()->regenerateToken(); // Regenerate CSRF token
 
-        return redirect()->route('login.show');
+        return redirect()->route('login');
     }
 
     public function register(Request $request)
@@ -180,33 +182,66 @@ class LoginController extends Controller
 
     public function proceedToPayment(Request $request)
     {
-            $stripe = StripeConfigurations::latest()->first();
+        $request->validate([
+            'amount' => 'required|numeric|min:0.01', // Amount in dollars
+        ]);
 
-            try {
-                Stripe::setApiKey($stripe->stripe_secret);
+        $stripe = StripeConfigurations::latest()->first();
 
-                $paymentIntent = PaymentIntent::create([
-                    'amount' => 5000,
-                    'currency' => 'usd',
-                    'metadata' => ['integration_check' => 'accept_a_payment'],
-                ]);
+        if (!$stripe || !$stripe->stripe_secret) {
+            return response()->json(['error' => 'Stripe configuration is missing'], 500);
+        }
 
-                return response()->json([
-                    'clientSecret' => $paymentIntent->client_secret,
-                ]);
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 400);
-            }
+        try {
+            Stripe::setApiKey($stripe->stripe_secret);
+            $amountInCents = intval($request->amount);
+
+
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $amountInCents,
+                'currency' => 'usd',
+                'metadata' => [
+                    'integration_check' => 'accept_a_payment',
+                ],
+            ]);
+
+            dd($paymentIntent);
+            return response()->json([
+                'clientSecret' => $paymentIntent->client_secret,
+            ]);
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            \Log::error('Stripe API Error: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 400);
+        } catch (\Exception $e) {
+            \Log::error('General Error: ' . $e->getMessage()); // Log unexpected errors
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+
 
     public function showStripePaymentPage()
     {
-        return view('superadmin.pages.stripe.stripe-payment');
+        $stripe = StripeConfigurations::first();
+
+        return view('superadmin.pages.stripe.stripe-payment',compact('stripe'));
     }
 
     public function landing()
     {
         $homepage = Homepage::all();
         return view('landing', compact('homepage'));
+    }
+
+    public function createPaymentIntent(Request $request)
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY')); // Your secret key
+
+        $amount = $request->input('amount'); // Amount in cents
+        $paymentIntent = PaymentIntent::create([
+            'amount' => $amount,
+            'currency' => 'usd', // Change to your desired currency
+        ]);
+
+        return response()->json(['clientSecret' => $paymentIntent->client_secret]);
     }
 }
